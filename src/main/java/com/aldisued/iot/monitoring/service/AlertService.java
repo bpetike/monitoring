@@ -23,8 +23,14 @@ public class AlertService {
   }
 
   public Alert saveAlert(AlertDto alertDto) {
-    // TODO: Task 6
-    return null;
+    Alert alert = new Alert();
+    alert.setSensor(sensorRepository.findById(alertDto.sensorId()).orElseThrow());
+    alert.setMessage(alertDto.message());
+    alert.setTimestamp(alertDto.timestamp());
+
+    Alert savedAlert = alertRepository.save(alert);
+    kafkaTemplate.send("alerts", alertDto);
+    return savedAlert;
   }
 
   public AlertDto findLastAlertBySensorId(UUID sensorId) {
