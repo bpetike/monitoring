@@ -20,4 +20,14 @@ public class SensorService {
         sensor.type()
     ));
   }
+
+  public boolean existsByName(String name) {
+    Sensor sensor = sensorRepository.findByName(name);
+    if (sensor == null) {
+      return false;
+    }
+    return true;
+    
+  }
 }
+
